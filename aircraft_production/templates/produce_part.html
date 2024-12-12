@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parça Üret</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
+        <!-- Başlık -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Parça Üret</h1>
+        {% if success_message %}
+        <script>
+            alert("{{ success_message }}");
+        </script>
+        {% endif %}
+        <!-- Form -->
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            {{ form.as_p|safe }}
+            <button
+                type="submit"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-lg text-lg font-medium transition duration-300">
+                Üret
+            </button>
+        </form>
+
+        <!-- Dashboard'a Dön -->
+        <div class="mt-6 text-center">
+            <a href="{% url 'dashboard' %}" class="text-indigo-500 font-semibold hover:underline hover:text-indigo-700 transition duration-200">
+                Dashboard'a Dön
+            </a>
+        </div>
+    </div>
+<img
+        src="https://cdnv2.t3vakfi.org/media/images/t3-eng-logo.png"
+        alt="Login Illustration"
+        class="absolute bottom-4 right-4 w-70 h-48 opacity-90">
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personel Kayıt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 h-screen flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Kayıt olun</h2>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="space-y-4">
+                <!-- Field Çerçeveleri -->
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ field.label }}
+                    </label>
+                    {% if field.name == "password1" or field.name == "password2" %}
+                    <!-- Password Alanları -->
+                    <input
+                        id="{{ field.id_for_label }}"
+                        name="{{ field.name }}"
+                        type="password"
+                        class="w-full border border-indigo-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+                    />
+                    {% elif field.name == "team" %}
+                    <!-- Team Alanı (Select) -->
+                    <select
+                        id="{{ field.id_for_label }}"
+                        name="{{ field.name }}"
+                        class="w-full border border-indigo-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+                    >
+                        {% for choice in field.field.queryset %}
+                        <option value="{{ choice.id }}" {% if field.value == choice.id %}selected{% endif %}>
+                            {{ choice.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% else %}
+                    <!-- Diğer Alanlar -->
+                    <input
+                        id="{{ field.id_for_label }}"
+                        name="{{ field.name }}"
+                        type="{{ field.field.widget.input_type|default_if_none:'text' }}"
+                        value="{{ field.value|default_if_none:'' }}"
+                        class="w-full border border-indigo-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+                    />
+                    {% endif %}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-indigo-300">
+                Kayıt ol
+            </button>
+        </form>
+        <a href="{% url 'login' %}" class="block text-center text-indigo-600 hover:underline mt-4">
+            Zaten bir hesabınız var mı? Buradan giriş yapın.
+        </a>
+    </div>
+<img
+        src="https://cdnv2.t3vakfi.org/media/images/t3-eng-logo.png"
+        alt="Login Illustration"
+        class="absolute bottom-4 right-4 w-70 h-48 opacity-90">
+</body>
+</html>

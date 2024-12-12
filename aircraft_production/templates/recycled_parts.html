@@ -1,0 +1,31 @@
+<h1>Geri Dönüşümdeki Parçalar</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Parça İsmi</th>
+            <th>Uçak</th>
+            <th>Adet</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for part in parts %}
+            <tr>
+                <td>{{ part.part.name }}</td>
+                <td>{{ part.aircraft.name }}</td>
+                <td>{{ part.quantity }}</td>
+                <td>
+                    <form method="post" action="{% url 'restore_part' part.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="color: green;">Geri Yükle</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">Henüz geri dönüşüme atılmış bir parça bulunmamaktadır.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'part_list' %}">Parça Listesine Dön</a>

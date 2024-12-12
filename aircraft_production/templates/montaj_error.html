@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksik Parçalar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-red-500 via-pink-500 to-yellow-500 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+        <!-- Başlık -->
+        <h1 class="text-3xl font-bold text-red-600 text-center mb-4">Üretim Başarısız!</h1>
+        <p class="text-gray-700 text-center mb-6">
+            Seçilen Uçak: <span class="font-semibold">{{ aircraft.name }}</span>
+        </p>
+
+        <!-- Eksik Parçalar Listesi -->
+        <p class="text-lg font-medium text-gray-800 mb-4">Eksik Parçalar:</p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+            {% for part, quantity_needed in missing_parts %}
+            <li>
+                <span class="font-semibold">{{ part }}</span> (Eksik: <span class="text-red-500 font-semibold">{{ quantity_needed }} adet</span>)
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Montaj Sayfasına Geri Dön -->
+        <div class="mt-6 text-center">
+            <a
+                href="{% url 'montaj_page' %}"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium shadow-lg transition duration-300"
+            >
+                Montaj Sayfasına Geri Dön
+            </a>
+        </div>
+    </div>
+<img
+        src="https://cdnv2.t3vakfi.org/media/images/t3-eng-logo.png"
+        alt="Login Illustration"
+        class="absolute bottom-4 right-4 w-70 h-48 opacity-90">
+</body>
+</html>

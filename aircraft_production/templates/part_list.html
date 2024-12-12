@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parça Listesi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jQuery ve DataTables CSS/JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+</head>
+<body class="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-5xl w-full">
+        <!-- Başlık -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">Parça Listesi</h1>
+
+        <!-- DataTable -->
+        <div class="overflow-x-auto">
+            <table id="partsTable" class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2 text-gray-800 text-left">Parça Adı</th>
+                        <th class="border border-gray-300 px-4 py-2 text-gray-800 text-left">Uçak Adı</th>
+                        <th class="border border-gray-300 px-4 py-2 text-gray-800 text-center">Adet</th>
+                        <th class="border border-gray-300 px-4 py-2 text-gray-800 text-center">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for part in parts %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="border border-gray-300 px-4 py-2">{{ part.part.name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ part.aircraft.name }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">{{ part.quantity }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <form method="post" action="{% url 'decrement_part' part.id %}" class="inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-500 hover:text-red-700 font-medium">Geri Dönüşüme Gönder</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="border border-gray-300 px-4 py-2 text-center text-gray-500">
+                            Henüz bir parça bulunmamaktadır.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Geri Dön -->
+        <div class="mt-6 text-center">
+            <a
+                href="{% url 'dashboard' %}"
+                class="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-lg font-medium transition duration-300"
+            >
+                Dashboard'a Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- DataTables Initialization -->
+    <script>
+        $(document).ready(function () {
+            $('#partsTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.1/i18n/tr.json"
+                },
+                pageLength: 50,
+                responsive: true
+            });
+        });
+    </script>
+    <img
+        src="https://cdnv2.t3vakfi.org/media/images/t3-eng-logo.png"
+        alt="Login Illustration"
+        class="absolute bottom-4 right-4 w-35 h-24 opacity-90">
+</body>
+</html>

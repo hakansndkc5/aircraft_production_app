@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
+        <div class="absolute top-6 left-6 bg-white shadow-lg rounded-lg p-4 w-64">
+        <h1 class="text-xl font-bold text-gray-800">Hoşgeldiniz, {{ user.first_name }}!</h1>
+        <p class="text-sm text-gray-500 mt-1">Takımınız: {{ user.employee_profile.team.name }}</p>
+    </div>
+
+        <!-- Başlık -->
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Üretim Atölyesi</h1>
+        <p class="text-gray-600 text-center mb-8">
+            Buradan sadece {{ part }} üretimi yapabilir veya mevcut parçaları listeleyebilirsiniz.
+        </p>
+
+        <!-- Butonlar -->
+        <div class="flex flex-col gap-4">
+            <a href="{% url 'produce_part' %}">
+                <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-lg text-lg font-medium transition duration-300">
+                    {{ part }} Üret
+                </button>
+            </a>
+            <a href="{% url 'part_list' %}">
+                <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow-lg text-lg font-medium transition duration-300">
+                    Parçaları Listele veya Geri Dönüşüme gönder
+                </button>
+            </a>
+        </div>
+    </div>
+<form method="post" action="{% url 'logout' %}" class="absolute bottom-6 left-6">
+        {% csrf_token %}
+        <button
+            type="submit"
+            class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg shadow-md text-sm font-medium transition duration-300"
+        >
+            Çıkış Yap
+        </button>
+    </form>
+<img
+        src="https://cdnv2.t3vakfi.org/media/images/t3-eng-logo.png"
+        alt="Login Illustration"
+        class="absolute bottom-4 right-4 w-70 h-48 opacity-90">
+</body>
+</html>
