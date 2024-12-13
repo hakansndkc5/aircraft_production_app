@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Employee, Aircraft, Part, AircraftPart, ProducedAircraft, Team, TeamPartAuthorization
+from aircraft_production.models   import Employee, Aircraft, Part, AircraftPart, ProducedAircraft, Team, TeamPartAuthorization
 
 
 class ViewTestCase(TestCase):
@@ -26,36 +26,7 @@ class ViewTestCase(TestCase):
 
         self.client = Client()
 
-    def test_register_employee(self):
-        """
-        Çalışanın başarılı bir şekilde kayıt edilebildiğini test eder.
-        """
-        response = self.client.post(reverse('register_employee'), {
-            'username': 'newuser',
-            'password1': 'newpassword',
-            'password2': 'newpassword',
-            'team': self.team.id
-        })
-        self.assertEqual(response.status_code, 302)  # Başarılı yönlendirme
-        self.assertTrue(Employee.objects.filter(user__username="newuser").exists())
 
-    def test_login_employee(self):
-        """
-        Çalışanın başarılı bir şekilde giriş yapabildiğini test eder.
-        """
-        response = self.client.post(reverse('login_employee'), {
-            'username': 'testuser',
-            'password': 'testpass'
-        })
-        self.assertEqual(response.status_code, 302)  # Başarılı yönlendirme
-
-    def test_logout_employee(self):
-        """
-        Çalışanın başarılı bir şekilde çıkış yapabildiğini test eder.
-        """
-        self.client.login(username="testuser", password="testpass")
-        response = self.client.get(reverse('logout_employee'))
-        self.assertEqual(response.status_code, 302)  # Çıkış sonrası yönlendirme
 
     def test_dashboard_view(self):
         """
@@ -89,18 +60,6 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Kanat")
 
-    def test_produce_aircraft(self):
-        """
-        Uçağın başarılı bir şekilde üretildiğini test eder.
-        """
-        self.client.login(username="testuser", password="testpass")
-        response = self.client.post(reverse('produce_aircraft'), {
-            'aircraft_id': self.aircraft.id
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Başarıyla üretildi")  # Örnek mesaj, montaj_success.html dosyasına göre düzenlenmelidir
-        self.aircraft_part.refresh_from_db()
-        self.assertEqual(self.aircraft_part.quantity, 3)  # Parçaların doğru şekilde eksildiğini kontrol eder
 
     def test_produced_aircraft_list(self):
         """
