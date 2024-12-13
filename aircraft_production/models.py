@@ -12,7 +12,7 @@ class Part(models.Model):
     ]
 
     name = models.CharField(max_length=50, choices=PART_TYPES)
-    stock = models.PositiveIntegerField(default=0)  # Stock quantity
+    stock = models.PositiveIntegerField(default=0)  
 
     def __str__(self):
         return f"{self.name} - Stock: {self.stock}"
@@ -51,7 +51,7 @@ class Employee(models.Model):
 
 
     def __str__(self):
-        return self.user.get_full_name()  # Uses User model's first and last name
+        return self.user.get_full_name() 
 
 class ProducedAircraft(models.Model):
     name = models.CharField(max_length=100)  # Üretilen uçağın adı
@@ -69,7 +69,7 @@ class AircraftPart(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)  # Geri dönüşümde mi kontrolü için
 
     class Meta:
-        unique_together = ('aircraft', 'part')  # Each part can only be used in one aircraft.
+        unique_together = ('aircraft', 'part')  # Her parça sadece bir uçakta kullanılabilir.
 
     def __str__(self):
         return f"{self.aircraft} - {self.part}"
